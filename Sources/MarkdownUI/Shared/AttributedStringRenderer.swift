@@ -159,7 +159,16 @@ private extension AttributedStringRenderer {
             return attributedString(for: inlines)
 
         case .thematicBreak:
-            return NSAttributedString()
+			let hr: NSAttributedString
+			#if os(macOS)
+			hr = NSAttributedString(string: "\u{00A0} \u{0009} \u{00A0}\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: NSColor.gray])
+			#elseif os(iOS)
+			hr = NSAttributedString(string: "\u{00A0} \u{0009} \u{00A0}\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: UIColor.gray])
+			#else
+			hr = NSAttributedString()
+			#endif
+
+			return hr
         }
     }
 
